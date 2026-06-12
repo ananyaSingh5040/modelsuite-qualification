@@ -22,6 +22,21 @@ const SubmissionsPage = () => {
     }
   };
 
+  const fmtDate = (raw) => {
+  if (!raw) return "—";
+  try {
+    const d = new Date(raw);
+    if (isNaN(d)) return raw;
+    return d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  } catch {
+    return raw;
+  }
+};
+
   // eslint-disable-next-line
   useEffect(() => { loadSubmissions(); }, []);
   const pending  = submissions.filter((s) => s.reviewStatus === 'Pending').length;
@@ -125,12 +140,12 @@ const SubmissionsPage = () => {
                           </a>
                         ) : (
                           <span className="text-text-faint text-[13px] italic">None</span>
-                        )}
+                        )} 
                       </td>
 
                       {/* Submitted at — raw ISO */}
                       <td className={`${tdCls} text-text-muted text-[13px] whitespace-nowrap`}>
-                        {sub.createdAt}
+                        {fmtDate(sub.createdAt)}
                       </td>
 
                       {/* Review status */}
